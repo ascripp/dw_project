@@ -83,23 +83,31 @@ def draw_characters():
 		gameScreen.blit(char_sprites[hero_frame_two], (448, 448))
 
 
+def do_movement(current_map):
 
-def do_movement():
+	#create list of collision tiles
+	uncrossable_tiles = []
+	with open('forbidden.txt') as mapfile:
+	    uncrossable_tiles = list(map(int, mapfile.read().split('\n')))
 
 	for event in pygame.event.get():
 		if event.type == KEYDOWN:
 			if event.key == K_UP:
-				hero.y_position -= 1
 				hero.sprite_frame = 4
+				if current_map[97] not in uncrossable_tiles:
+					hero.y_position -= 1
 			elif event.key == K_DOWN:
-				hero.y_position += 1
 				hero.sprite_frame = 0
+				if current_map[127] not in uncrossable_tiles:
+					hero.y_position += 1
 			elif event.key == K_LEFT:
-				hero.x_position -= 1
 				hero.sprite_frame = 2
+				if current_map[111] not in uncrossable_tiles:
+					hero.x_position -= 1
 			elif event.key == K_RIGHT:
-				hero.x_position += 1
 				hero.sprite_frame = 6
+				if current_map[113] not in uncrossable_tiles:
+					hero.x_position += 1
 			elif event.key == K_ESCAPE:
 				pygame.quit()
 				sys.exit()
@@ -123,7 +131,7 @@ while True:
 
 	pygame.display.update()
 
-	do_movement()
+	do_movement(level_map)
 
 	if counter < 15:
 		counter += 1
