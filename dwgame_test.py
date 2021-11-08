@@ -13,10 +13,6 @@ gameScreen = pygame.display.set_mode((960, 960))
 pygame.display.set_caption('Dragon Warrior Pygame') 
 #start counter at 0 - used for animations
 counter = 0
-#load tiles into list - all maps use same tiles
-terrain_tiles = load_tileset("tiles.png", 64, 64)
-#load sprites - all characters are in the same spritesheet
-char_sprites = load_tileset("tchars.png", 64, 64)
 
 
 #------------------------- Classes and functions
@@ -146,6 +142,11 @@ def do_movement(current_map):
                 pygame.quit()
                 sys.exit()
 
+#------------------------- Initialize required lists outside of game loop
+#load tiles into list - all maps use same tiles
+terrain_tiles = load_tileset("tiles.png", 64, 64)
+#load sprites - all characters are in the same spritesheet
+char_sprites = load_tileset("tchars.png", 64, 64)
 
 #------------------------- Instantiate classes outside of game loop
 #create class for hero passing in start location
