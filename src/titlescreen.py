@@ -1,5 +1,5 @@
 from src.state import State
-from src.overworld import Overworld
+from src.gamescreen import GameScreen
 
 class TitleScreen(State):
     def __init__ (self, game):

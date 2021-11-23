@@ -1,7 +1,7 @@
 #------------------------- Import libraries
 import os, sys, math, time, pygame
 
-from src.title import Title
+from src.splashscreen import SplashScreen
 
 class Game():
 
@@ -16,6 +16,7 @@ class Game():
         self.actions = {"left": False, "right": False, "up": False, "down": False, "abutton": False,
         "bbutton": False, "start": False, "select": False}
         self.deltaTime, self.prevTime = 0, 0
+        self.frameClock = pygame.time.Clock()
         self.stateStack = []
         self.load_assets()
         self.load_states()
@@ -26,6 +27,7 @@ class Game():
             self.get_actions()
             self.update()
             self.render()
+            self.frameClock.tick(60)
 
     def get_actions(self):
         for event in pygame.event.get():
@@ -97,7 +99,7 @@ class Game():
         self.font = pygame.font.Font(os.path.join(self.font_dir, "PressStart2P.ttf"), 20)
 
     def load_states(self):
-        self.title_screen = Title(self)
+        self.title_screen = SplashScreen(self)
         self.stateStack.append(self.title_screen)
 
     def reset_keys(self):

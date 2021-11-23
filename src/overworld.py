@@ -1,7 +1,7 @@
 import pygame, os
 from src.state import State
 
-class Overworld(State):
+class GameScreen(State):
     def __init__ (self, mapname, game):
         State.__init__(self, game)
         self.image = pygame.image.load(os.path.join(self.game.assets_dir, "tiles.png"))
@@ -14,7 +14,7 @@ class Overworld(State):
         #load tiles into list
         for tile_y in range(0, self.image_height//64): #split image into rows by tile height
             for tile_x in range(0, self.image_width//64):  #split rows into tiles by tile width
-                rect = (tile_x*64, tile_y*64, 64, 64)  #grab a tile
+                rect = (tile_x*64, tile_y*64, 64, 64)  #set location of tile on screen
                 self.tile_table.append(self.image.subsurface(rect))  #add tile to the map list
 
     def load_map(self, x_off, y_off):
