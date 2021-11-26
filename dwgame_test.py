@@ -27,11 +27,12 @@ class Game():
             self.get_actions()
             self.update()
             self.render()
-            self.frameClock.tick(60)
+            self.frameClock.tick(4)
 
     def get_actions(self):
+        #function to check pygame's event tracker for certain keys being down or up
         for event in pygame.event.get():
-            if event.type == pygame.QUIT:
+            if event.type == pygame.QUIT: #this allows the window close to exit the game
                 self.playing = False
                 self.running = False
             if event.type == pygame.KEYDOWN:
@@ -73,14 +74,17 @@ class Game():
                     self.actions['bbutton'] = False
 
     def update(self):
+        #check the state stack list and perform the update function for whatever state is on "top"
         self.stateStack[-1].update(self.deltaTime, self.actions)
 
     def render(self):
+        #perform the render function of the current state and store in gameCanvas
         self.stateStack[-1].render(self.gameCanvas)
-        self.screen.blit(self.gameCanvas, (0, 0))
-        pygame.display.flip()
+        self.screen.blit(self.gameCanvas, (0, 0)) #send contents of gameCanvas to the screen
+        pygame.display.flip() #update the screen
 
     def get_deltaTime(self):
+        #track how much time has passed since last frame
         now = time.time()
         self.deltaTime = now - self.prevTime
         self.prevTime = now
@@ -93,16 +97,19 @@ class Game():
         surface.blit(text_surface, text_rect)
 
     def load_assets(self):
+        #assign variables for directories
         self.assets_dir = os.path.join("assets")
         self.sprite_dir = os.path.join(self.assets_dir, "sprites")
         self.font_dir = os.path.join(self.assets_dir, "font")
         self.font = pygame.font.Font(os.path.join(self.font_dir, "PressStart2P.ttf"), 20)
 
     def load_states(self):
+        #put the first state on top of stack
         self.title_screen = SplashScreen(self)
         self.stateStack.append(self.title_screen)
 
     def reset_keys(self):
+        #set all keypress events to false, or unpressed
         for action in self.actions:
             self.actions[action] = False
 

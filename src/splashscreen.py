@@ -5,8 +5,6 @@ from src.titlescreen import TitleScreen
 class SplashScreen(State):
     def __init__ (self, game):
         State.__init__(self, game)
-        pygame.mixer.music.load(os.path.join(self.game.assets_dir, "dw1intro.mp3"))
-        pygame.mixer.music.play()
 
     def update(self, deltaTime, actions):
         if actions["start"]:

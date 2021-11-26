@@ -1,14 +1,17 @@
-import pygame, os, importlib
+import pygame, os
+from time import sleep
 from src.state import State
-from assets.mapdata import maps, startLocation, collisionTiles
+from assets.mapdata import *
 from assets.player import playerData
 
-class GameScreen(State):
+class MainScreen(State):
     def __init__ (self, mapname, game):
         State.__init__(self, game)
         self.image = pygame.image.load(os.path.join(self.game.assets_dir, "tiles.png"))
         self.maplist = list(map(int, maps[mapname]))
         self.collisionTiles = list(map(int, collisionTiles))
+        self.exitTiles = list(map(int, exitTiles))
+        self.frameTimer = 0
         self.character = Character(self.game)
         self.startLocation = list(map(int, startLocation[mapname]))
         self.herox = self.startLocation[0]
@@ -57,22 +60,33 @@ class GameScreen(State):
             x_position = 0
             y_position += 64
 
-    def update(self, deltaTime, actions):
-        self.character.update(actions)
+    def do_movement(self, deltaTime, actions):
         if actions["up"]:
             if self.current_map[97] not in self.collisionTiles:
                 self.heroy -= 1
+                if self.current_map[97] in self.exitTiles:
         elif actions["down"]:
             if self.current_map[127] not in self.collisionTiles:
                 self.heroy += 1
+                if self.current_map[127] in self.exitTiles:
         elif actions["left"]:
             if self.current_map[111] not in self.collisionTiles:
                 self.herox -= 1
+                if self.current_map[111] in self.exitTiles:
         elif actions["right"]:
             if self.current_map[113] not in self.collisionTiles:
                 self.herox += 1
+                if self.current_map[113] in self.exitTiles:
         #elif event.key == pygame.K_RETURN:
         #elif event.key == pygame.K_ESCAPE:
+        #self.frameTimer += deltaTime
+        #if self.frameTimer > .25:
+        #    self.frameTimer = 0
+
+    def update(self, deltaTime, actions):
+        self.character.update(actions)
+        self.do_movement(deltaTime, actions)
+
 
     def render(self, display):
         self.load_map(self.herox, self.heroy)
@@ -92,24 +106,24 @@ class Character():
         for tile_y in range(0, self.image_height//self.tile_height): #split image into rows by tile height
             for tile_x in range(0, self.image_width//self.tile_width):  #split rows into tiles by tile width
                 rect = (tile_x*self.tile_width, tile_y*self.tile_height, 
-                self.tile_width, self.tile_height)  #grab a tile
+                self.tile_width, self.tile_height)  #set tile location on screen
                 self.sprite_table.append(self.image.subsurface(rect))  #add tile to the map list
 
     def draw_character(self, char_sprites, display):
          #set up variables for animation frames
         hero_frame_one = self.sprite_frame
         hero_frame_two = self.sprite_frame + 1
-        #flip back and forth every 7 ticks
-        if self.animationCounter < 30:
+        #flip back and forth every 30 ticks
+        if self.animationCounter <= 2:
             display.blit(self.sprite_table[hero_frame_one], (448, 448))
-        elif self.animationCounter >= 30:
+        elif self.animationCounter >= 3:
             display.blit(self.sprite_table[hero_frame_two], (448, 448)) 
 
     def update(self, actions):
         #advance counter for animation
-        if self.animationCounter < 60:
+        if self.animationCounter < 4:
             self.animationCounter += 1
-        elif self.animationCounter >= 60:
+        elif self.animationCounter >= 4:
             self.animationCounter = 1
 
         if actions["up"]:
