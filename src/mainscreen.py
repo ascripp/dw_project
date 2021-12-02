@@ -1,13 +1,13 @@
 import pygame, os
-from time import sleep
 from src.state import State
+from src.menuscreen import mainMenu
 from assets.mapdata import *
-from assets.player import playerData
 
 class MainScreen(State):
     def __init__ (self, mapname, game):
         State.__init__(self, game)
         self.image = pygame.image.load(os.path.join(self.game.assets_dir, "tiles.png"))
+        self.mapname = mapname
         self.maplist = list(map(int, maps[mapname]))
         self.collisionTiles = list(map(int, collisionTiles))
         self.exitTiles = list(map(int, exitTiles))
@@ -61,27 +61,77 @@ class MainScreen(State):
             y_position += 64
 
     def do_movement(self, deltaTime, actions):
-        if actions["up"]:
-            if self.current_map[97] not in self.collisionTiles:
-                self.heroy -= 1
-                if self.current_map[97] in self.exitTiles:
-        elif actions["down"]:
-            if self.current_map[127] not in self.collisionTiles:
-                self.heroy += 1
-                if self.current_map[127] in self.exitTiles:
-        elif actions["left"]:
-            if self.current_map[111] not in self.collisionTiles:
-                self.herox -= 1
-                if self.current_map[111] in self.exitTiles:
-        elif actions["right"]:
-            if self.current_map[113] not in self.collisionTiles:
-                self.herox += 1
-                if self.current_map[113] in self.exitTiles:
-        #elif event.key == pygame.K_RETURN:
-        #elif event.key == pygame.K_ESCAPE:
-        #self.frameTimer += deltaTime
-        #if self.frameTimer > .25:
-        #    self.frameTimer = 0
+        if self.game.firstCall == True:
+            if actions["up"]:
+                if self.current_map[97] not in self.collisionTiles:
+                    self.heroy -= 1
+                    self.game.firstCall = False
+                    if self.current_map[97] in self.exitTiles:
+                        self.change_location(self.herox, self.heroy)
+            elif actions["down"]:
+                if self.current_map[127] not in self.collisionTiles:
+                    self.heroy += 1
+                    self.game.firstCall = False
+                    if self.current_map[127] in self.exitTiles:
+                        self.change_location(self.herox, self.heroy)
+            elif actions["left"]:
+                if self.current_map[111] not in self.collisionTiles:
+                    self.herox -= 1
+                    self.game.firstCall = False
+                    if self.current_map[111] in self.exitTiles:
+                        self.change_location(self.herox, self.heroy)
+            elif actions["right"]:
+                if self.current_map[113] not in self.collisionTiles:
+                    self.herox += 1
+                    self.game.firstCall = False
+                    if self.current_map[113] in self.exitTiles:
+                        self.change_location(self.herox, self.heroy)
+        else:
+            self.frameTimer += deltaTime
+            if self.frameTimer > .25:
+                self.frameTimer = 0
+                if actions["up"]:
+                    if self.current_map[97] not in self.collisionTiles:
+                        self.heroy -= 1
+                        if self.current_map[97] in self.exitTiles:
+                            self.change_location(self.herox, self.heroy)
+                elif actions["up"] == False:
+                    self.game.firstCall = True
+                elif actions["down"]:
+                    if self.current_map[127] not in self.collisionTiles:
+                        self.heroy += 1
+                        if self.current_map[127] in self.exitTiles:
+                            self.change_location(self.herox, self.heroy)
+                elif actions["down"] == False:
+                    self.game.firstCall = True                            
+                elif actions["left"]:
+                    if self.current_map[111] not in self.collisionTiles:
+                        self.herox -= 1
+                        if self.current_map[111] in self.exitTiles:
+                            self.change_location(self.herox, self.heroy)
+                elif actions["left"] == False:
+                    self.game.firstCall = True                            
+                elif actions["right"]:
+                    if self.current_map[113] not in self.collisionTiles:
+                        self.herox += 1
+                        if self.current_map[113] in self.exitTiles:
+                            self.change_location(self.herox, self.heroy)
+                elif actions["right"] == False:
+                    self.game.firstCall = True                                            
+
+    def change_location(self, herox, heroy):
+        if self.mapname == 'overworld':
+            self.game.lastLocation.append(self.herox)
+            self.game.lastLocation.append(self.heroy)
+            self.heroLocation = (self.herox, self.heroy)
+            new_state = MainScreen(exitStates[self.heroLocation], self.game)
+            new_state.enter_state()
+            self.game.reset_keys()
+        else:
+            self.heroy = self.game.lastLocation.pop()
+            self.herox = self.game.lastLocation.pop()
+            self.exit_state()
+            self.game.reset_keys()
 
     def update(self, deltaTime, actions):
         self.character.update(actions)
@@ -114,16 +164,16 @@ class Character():
         hero_frame_one = self.sprite_frame
         hero_frame_two = self.sprite_frame + 1
         #flip back and forth every 30 ticks
-        if self.animationCounter <= 2:
+        if self.animationCounter <= (self.game.FPS/2):
             display.blit(self.sprite_table[hero_frame_one], (448, 448))
-        elif self.animationCounter >= 3:
+        elif self.animationCounter >= ((self.game.FPS/2)+1):
             display.blit(self.sprite_table[hero_frame_two], (448, 448)) 
 
     def update(self, actions):
         #advance counter for animation
-        if self.animationCounter < 4:
+        if self.animationCounter < self.game.FPS:
             self.animationCounter += 1
-        elif self.animationCounter >= 4:
+        elif self.animationCounter >= self.game.FPS:
             self.animationCounter = 1
 
         if actions["up"]:
@@ -134,6 +184,9 @@ class Character():
             self.sprite_frame = 2
         elif actions["right"]:
             self.sprite_frame = 6
+        elif actions["start"]:
+            new_state = mainMenu("main", self.game)
+            new_state.enter_state()
         #elif event.key == pygame.K_RETURN:
         #elif event.key == pygame.K_ESCAPE:
 

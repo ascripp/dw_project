@@ -1,6 +1,5 @@
 #------------------------- Import libraries
 import os, sys, math, time, pygame
-
 from src.splashscreen import SplashScreen
 
 class Game():
@@ -17,6 +16,9 @@ class Game():
         "bbutton": False, "start": False, "select": False}
         self.deltaTime, self.prevTime = 0, 0
         self.frameClock = pygame.time.Clock()
+        self.FPS = 30
+        self.firstCall = True
+        self.lastLocation = []
         self.stateStack = []
         self.load_assets()
         self.load_states()
@@ -27,12 +29,12 @@ class Game():
             self.get_actions()
             self.update()
             self.render()
-            self.frameClock.tick(4)
+            self.frameClock.tick(self.FPS)
 
     def get_actions(self):
         #function to check pygame's event tracker for certain keys being down or up
         for event in pygame.event.get():
-            if event.type == pygame.QUIT: #this allows the window close to exit the game
+            if event.type == pygame.QUIT: #this allows the window X button to exit the game
                 self.playing = False
                 self.running = False
             if event.type == pygame.KEYDOWN:
