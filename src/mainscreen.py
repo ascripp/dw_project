@@ -138,6 +138,7 @@ class MainScreen(State):
             self.heroLocation = (self.herox, self.heroy)
             new_state = MainScreen(exitStates[self.heroLocation], self.game)
             new_state.enter_state()
+            self.idleTimer = 0
             self.game.reset_keys()
         else:
             self.heroy = self.game.lastLocation.pop()
@@ -151,6 +152,7 @@ class MainScreen(State):
           self.miniMenu.enter_state()
           new_state = Menu("main", self.game)
           new_state.enter_state()
+          self.idleTimer = 0
         self.character.update(actions)
         self.do_movement(deltaTime, actions)
 
