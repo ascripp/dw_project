@@ -1,8 +1,11 @@
 menuLocations = {
-    "main": [6, 1]
+    "ministat": [0, 2],
+    "main": [6, 1],
+    "status": [5, 3]
 }
 
 titles = {
+    "ministat": "plac",
     "main": "COMMAND",
     "combat": "COMMAND",
     "spell": "SPELL",
@@ -11,24 +14,73 @@ titles = {
 }
 
 menus = {
-    "main": [1, 2, 2, 2, 2, 2, 2, 3,
-             4, 5, 5, 5, 5, 5, 5, 6,
-             4, 5, 5, 5, 5, 5, 5, 6,
-             4, 5, 5, 5, 5, 5, 5, 6,
-             7, 8, 8, 8, 8, 8, 8, 9,
-             8, 5]
+    "ministat": [
+        1, 2, 2, 3,
+        4, 5, 5, 6,
+        4, 5, 5, 6,
+        4, 5, 5, 6,
+        4, 5, 5, 6,
+        7, 8, 8, 9,
+        4, 6
+        ],
+
+    "main": 
+        [1, 2, 2, 2, 2, 2, 2, 3,
+         4, 5, 5, 5, 5, 5, 5, 6,
+         4, 5, 5, 5, 5, 5, 5, 6,
+         4, 5, 5, 5, 5, 5, 5, 6,
+         7, 8, 8, 8, 8, 8, 8, 9,
+         8, 5
+         ],
+
+    "status": [
+        1, 2, 2, 2, 2, 2, 2, 2, 2, 3,
+        4, 5, 5, 5, 5, 5, 5, 5, 5, 6,
+        4, 5, 5, 5, 5, 5, 5, 5, 5, 6,
+        4, 5, 5, 5, 5, 5, 5, 5, 5, 6,
+        4, 5, 5, 5, 5, 5, 5, 5, 5, 6,
+        4, 5, 5, 5, 5, 5, 5, 5, 5, 6,
+        4, 5, 5, 5, 5, 5, 5, 5, 5, 6,
+        4, 5, 5, 5, 5, 5, 5, 5, 5, 6,
+        4, 5, 5, 5, 5, 5, 5, 5, 5, 6,
+        4, 5, 5, 5, 5, 5, 5, 5, 5, 6,
+        7, 8, 8, 8, 8, 8, 8, 8, 8, 9,
+        10, 11
+        ],
+        
 }
 
 menuOptions = {
     "main": [
-    ["TALK", 1, 1], 
-    ["STATUS", 1, 2], 
-    ["STAIRS", 1, 3], 
-    ["SEARCH", 1, 4], 
-    ["SPELL", 5, 1], 
-    ["ITEM", 5, 2], 
-    ["DOOR", 5, 3], 
-    ["TAKE", 5, 4]
+    {'text': "TALK", 'xloc': 1, 'yloc': 1, 'action': 'talk'}, 
+    {'text': "STATUS", 'xloc': 1, 'yloc': 2, 'action': 'status'}, 
+    {'text': "STAIRS", 'xloc': 1, 'yloc': 3, 'action': 'stairs'}, 
+    {'text': "SEARCH", 'xloc': 1, 'yloc': 4, 'action': 'search'}, 
+    {'text': "SPELL", 'xloc': 5, 'yloc': 1, 'action': 'spell'}, 
+    {'text': "ITEM", 'xloc': 5, 'yloc': 2, 'action': 'item'}, 
+    {'text': "DOOR", 'xloc': 5, 'yloc': 3, 'action': 'door'}, 
+    {'text': "TAKE", 'xloc': 5, 'yloc': 4, 'action': 'take'}
+    ],
+
+    "status": [
+    {'text': "NAME:", 'xloc': 3, 'xloc_r': 9, 'yloc': .5, 'action': 'pass'},
+    {'text': "STRENGTH:", 'xloc': 3.5, 'xloc_r': 9, 'yloc': 1.5, 'action': 'pass'},
+    {'text': "AGILITY:", 'xloc': 4, 'xloc_r': 9, 'yloc': 2.5, 'action': 'pass'},
+    {'text': "MAXIMUM HP:", 'xloc': 2.5, 'xloc_r': 9, 'yloc': 3.5, 'action': 'pass'},
+    {'text': "MAXIMUM MP:", 'xloc': 2.5, 'xloc_r': 9, 'yloc': 4.5, 'action': 'pass'},
+    {'text': "ATTACK POWER:", 'xloc': 1.5, 'xloc_r': 9, 'yloc': 5.5, 'action': 'pass'},
+    {'text': "DEFENSE POWER:", 'xloc': 1, 'xloc_r': 9, 'yloc': 6.5, 'action': 'pass'},
+    {'text': "WEAPON:", 'xloc': 1.5, 'xloc_r': 9, 'yloc': 7.5, 'action': 'pass'},
+    {'text': "ARMOR:", 'xloc': 2, 'xloc_r': 9, 'yloc': 8.5, 'action': 'pass'},
+    {'text': "SHIELD:", 'xloc': 1.5, 'xloc_r': 9, 'yloc': 9.5, 'action': 'pass'}
+    ],
+
+    "ministat": [
+    {'text': "LV", 'xloc': .5, 'yloc': 1, 'action': 'pass'},
+    {'text': "HP", 'xloc': .5, 'yloc': 2, 'action': 'pass'},
+    {'text': "MP", 'xloc': .5, 'yloc': 3, 'action': 'pass'},
+    {'text': "G", 'xloc': .5, 'yloc': 4, 'action': 'pass'},
+    {'text': "E", 'xloc': .5, 'yloc': 5, 'action': 'pass'},
     ]
 }
 

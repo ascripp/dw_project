@@ -1,6 +1,7 @@
 #------------------------- Import libraries
 import os, sys, math, time, pygame
 from src.splashscreen import SplashScreen
+from assets.playerdata import *
 
 class Game():
 
@@ -16,7 +17,8 @@ class Game():
         "bbutton": False, "start": False, "select": False}
         self.deltaTime, self.prevTime = 0, 0
         self.frameClock = pygame.time.Clock()
-        self.FPS = 30
+        self.FPS = 60
+        self.animationCounter = 0
         self.firstCall = True
         self.lastLocation = []
         self.stateStack = []
@@ -91,19 +93,10 @@ class Game():
         self.deltaTime = now - self.prevTime
         self.prevTime = now
 
-    def draw_text(self, surface, text, color, x, y):
-        text_surface = self.font.render(text, True, color)
-        #text_surface.set_colorkey((0, 0, 0))
-        text_rect = text_surface.get_rect()
-        text_rect.center = (x, y)
-        surface.blit(text_surface, text_rect)
-
     def load_assets(self):
         #assign variables for directories
         self.assets_dir = os.path.join("assets")
-        self.sprite_dir = os.path.join(self.assets_dir, "sprites")
-        self.font_dir = os.path.join(self.assets_dir, "font")
-        self.font = pygame.font.Font(os.path.join(self.font_dir, "PressStart2P.ttf"), 20)
+        self.src_dir = os.path.join("src")
 
     def load_states(self):
         #put the first state on top of stack

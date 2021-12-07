@@ -1,16 +1,24 @@
 playerData = {
+    "name": 'Test',
+    "strength": 9,
+    "agility": 6,
+    "level": 1,
+    "maxhp": 7,
+    "maxmp": 0,
+    "gold": 2,
+    "xp": 0,
     "x_position": 0,
     "y_position": 0,
     "sprite_frame": 0
 }
-
+#
 #self.x_position = x_position
 #self.y_position = y_position
 #self.sprite_frame = 0
-#self.level = level
-#self.xp = xp
-#self.maxhp = maxhp
-#self.maxmp = maxmp
+#self.level = 1
+#self.xp = 0
+#self.maxhp = 5
+#self.maxmp = 0
 #self.strength = strength
 #self.agility = agility
 #self.attack = self.strength + self.weapon
